@@ -1,0 +1,1 @@
+python3 plot.py $1 -s 0.1 -y vd_double_track/imr/suspension_spring_compression_m/front_left vd_double_track/imr/suspension_spring_compression_m/front_right vd_double_track/imr/suspension_spring_compression_m/rear_left vd_double_track/imr/suspension_spring_compression_m/rear_right
