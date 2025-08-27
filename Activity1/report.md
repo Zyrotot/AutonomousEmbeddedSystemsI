@@ -1,3 +1,5 @@
+# Exercise 1
+
 ## 1. Configuration and Documentation
 
 ### Simulator Parameters
@@ -91,3 +93,62 @@ The spring displacement response shows that during acceleration, higher step amp
 Changing the integration step produced very similar results in this scenario, as the simulation involves a simple case of a vehicle moving in a straight line under constant acceleration.  
 
 In more complex situations, increasing the integration step can introduce delays and numerical errors, since the model linearizations are updated less frequently. This can affect accuracy, stability, and the system's ability to respond to fast-changing dynamics.
+
+# Exercise 2
+
+For this exercise I created the script in `control_scripts/curve_control.py`, this script accelerates the car for a time, starts a curve and after completing it runs for a little more time.
+In the script I can change the acceleration before the curve and the change in acceleration during th curve, the aggressivity of the steering and the curve that will be made.
+
+## Parameter Variations
+| Curve type  | Degrees |
+|------------|--------------|
+| Straight        | 0  |
+| Gentle       | 30  |
+| Medium        | 90  |
+| Tight | 180  |
+
+This plot shows the position over time of every type of curve, for better visualization:
+
+![Cars trajectories](plot_figures/E2/position.png)
+
+### Constant acceleration step of 1 m/s^2
+
+![Velocity response for 1ms2 constant acceleration](plot_figures/E2/1ms_acceleration/velocity_change_0/velocity.png)
+
+![Spring displacement response for 1ms2 constant acceleration](plot_figures/E2/1ms_acceleration/velocity_change_0/spring_displacement.png)
+
+### Acceleration step of 1 m/s^2 before the curve an 3 m/s² during
+
+![Velocity response for 1ms before and 3ms2 after](plot_figures/E2/1ms_acceleration/velocity_change_2/velocity.png)
+
+![Spring displacement response for 1ms before and 3ms2 after](plot_figures/E2/1ms_acceleration/velocity_change_2/spring_displacement.png)
+
+### Constant acceleration step of 3 m/s^2
+
+![Velocity response for 3ms2 constant acceleration](plot_figures/E2/3ms_acceleration/velocity_change_0/velocity.png)
+
+![Spring displacement response for 3ms2 constant acceleration](plot_figures/E2/3ms_acceleration/velocity_change_0/spring_displacement.png)
+
+### Acceleration of 3 m/s² before the curve and 5 m/s² during
+
+![Velocity response for 3ms before and 5ms2 after](plot_figures/E2/3ms_acceleration/velocity_change_2/velocity.png)
+
+![Spring displacement response for 3ms before and 5ms2 after](plot_figures/E2/3ms_acceleration/velocity_change_2/spring_displacement.png)
+
+### Acceleration of 3 m/s² before the curve and -0.5 m/s² during
+
+![Velocity response for 3ms before and -0.5ms2 after](plot_figures/E2/3ms_acceleration/velocity_change_minus_3_5/velocity.png)
+
+![Spring displacement response for 3ms before and -0.5ms2 after](plot_figures/E2/3ms_acceleration/velocity_change_minus_3_5/spring_displacement.png)
+
+# Exercise 3
+
+
+For simulation of road conditions we need to change the variables `LMUX` and `LMUY` which represents the maximum friction in the longitudinal and lateral directions, I will be using:
+
+### Parameter Variations
+| Condition  | LMUX/LMUY |
+|------------|--------------|
+| Dry asphalt        | 0.9  |
+| Wet asphalt       | 0.5  |
+| Ice         | 0.1  |
