@@ -9,22 +9,18 @@ class VehicleController(Node):
     def __init__(self, steering_angle=0.3, target_yaw=math.pi/2, pre_delay=2.0, post_delay=2.0, curve_gain = 1.0, velocity_change=0.0):
         super().__init__('vehicle_controller')
 
-        # Publishers & Subscribers
         self.publisher_ = self.create_publisher(AckermannControlCommand,
                                                 '/simulation/actuation/control_command', 10)
         self.subscription = self.create_subscription(Odometry,
                                                      '/simulation/sensor/odometry',
                                                      self.odometry_callback, 10)
 
-        # Timer (10 Hz)
         self.timer = self.create_timer(0.1, self.timer_callback)
 
-        # Vehicle state
         self.current_speed = 0.0
         self.current_position = (0.0, 0.0, 0.0)
         self.current_yaw = 0.0
 
-        # Curve configuration
         self.steering_angle = steering_angle
         self.target_yaw = target_yaw
         self.pre_delay = pre_delay
@@ -32,7 +28,6 @@ class VehicleController(Node):
         self.velocity_change = velocity_change
         self.curve_gain = curve_gain
 
-        # Control flags
         self.start_time = self.get_clock().now().nanoseconds / 1e9
         self.curve_started = False
         self.curve_finished = False
@@ -44,18 +39,15 @@ class VehicleController(Node):
         self.get_logger().info("Vehicle control node started.")
 
     def odometry_callback(self, msg):
-        # Position
         x = msg.pose.pose.position.x
         y = msg.pose.pose.position.y
         z = msg.pose.pose.position.z
         self.current_position = (x, y, z)
 
-        # Orientation (quaternion → yaw)
         q = msg.pose.pose.orientation
         yaw = quaternion_to_yaw(q.x, q.y, q.z, q.w)
         self.current_yaw = yaw
 
-        # Speed
         vx = msg.twist.twist.linear.x
         vy = msg.twist.twist.linear.y
         self.current_speed = math.sqrt(vx**2 + vy**2)
@@ -65,7 +57,6 @@ class VehicleController(Node):
         msg = AckermannControlCommand()
         msg.stamp = self.get_clock().now().to_msg()
 
-        # Longitudinal control
         longitudinal = LongitudinalCommand()
         if not self.curve_started:
             if t < self.pre_delay:

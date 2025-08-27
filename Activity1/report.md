@@ -24,37 +24,37 @@ To modify these parameters, simply edit the config file and restart ROS.
 
 #### Center of Mass at 1.6 m
 
-![Velocity graph for 1.6m and 4 masses](plot_figures/velocity_1_6.png)
+![Velocity graph for 1.6m and 4 masses](plot_figures/E1/velocity_1_6.png)
 
 From the velocity graph, we can clearly see the effect of changing the vehicle mass: heavier vehicles take longer to accelerate **and** also take longer to decelerate.  
 
-![Spring displacement graph for 1.6m and 4 masses](plot_figures/spring_displacement_1_6.png)
+![Spring displacement graph for 1.6m and 4 masses](plot_figures/E1/spring_displacement_1_6.png)
 
 In the spring displacement graph, the curve shapes are very similar across all weights; the main difference is the magnitude of displacement. Heavier vehicles put more strain on the springs, and due to their slower deceleration, the stopping force is observed later in the heavier vehicles.
 
 #### Center of Mass at 1.8 m
 
-![Velocity graph for 1.8m and 4 masses](plot_figures/velocity_1_8.png)
+![Velocity graph for 1.8m and 4 masses](plot_figures/E1/velocity_1_8.png)
 
 The same observations apply: changing the center of mass has minimal effect on velocity response.  
 
-![Spring displacement graph for 1.8m and 4 masses](plot_figures/spring_displacement_1_8.png)
+![Spring displacement graph for 1.8m and 4 masses](plot_figures/E1/spring_displacement_1_8.png)
 
 With the center of mass shifted slightly rearward, we notice a redistribution of suspension load: rear springs experience higher displacement, while front springs experience slightly less. The overall curve shape remains consistent.
 
 #### Center of Mass at 2.0 m
 
-![Velocity graph for 2.0m and 4 masses](plot_figures/velocity_2_0.png)
+![Velocity graph for 2.0m and 4 masses](plot_figures/E1/velocity_2_0.png)
 
 Velocity response remains largely unaffected by this center of mass change.  
 
-![Spring displacement graph for 2.0m and 4 masses](plot_figures/spring_displacement_2_0.png)
+![Spring displacement graph for 2.0m and 4 masses](plot_figures/E1/spring_displacement_2_0.png)
 
 The rearward shift of the center of mass further accentuates the weight distribution effect: rear springs show even higher displacement, and front springs show lower displacement.
 
 #### Same Mass, Different center of mass
 
-![Spring displacement graph for the same mass and 3 different CoM](plot_figures/spring_displacement_same_mass.png)
+![Spring displacement graph for the same mass and 3 different CoM](plot_figures/E1/spring_displacement_same_mass.png)
 
 By comparing the same mass with different center of mass positions, the impact on weight distribution becomes clear: a forward center of mass increases front spring displacement and reduces rear spring displacement, while a rearward center of mass has the opposite effect.
 
@@ -68,11 +68,11 @@ By comparing the same mass with different center of mass positions, the impact o
 | 1.0                       |
 | 2.0                       |
 
-![Velocity response for different acceleration steps](plot_figures/acceleration_steps.png)
+![Velocity response for different acceleration steps](plot_figures/E1/acceleration_steps.png)
 
 As the acceleration step increases, the vehicle reaches the target speed more quickly. Higher step amplitudes result in a faster rise in velocity, demonstrating the influence of input magnitude on system response.
 
-![Spring displacement response for different acceleration steps](plot_figures/acceleration_steps_spring.png)
+![Spring displacement response for different acceleration steps](plot_figures/E1/acceleration_steps_spring.png)
 
 The spring displacement response shows that during acceleration, higher step amplitudes produce slightly lower spring compression, while during deceleration, the springs experience more abrupt and higher compression. This reflects the increased dynamic load and nonlinearity in the system when larger acceleration commands are applied.
 
@@ -86,7 +86,7 @@ The spring displacement response shows that during acceleration, higher step amp
 | 0.8                 |
 | 1.6                 |
 
-![Integration step variation](plot_figures/integration_steps.png)
+![Integration step variation](plot_figures/E1/integration_steps.png)
 
 Changing the integration step produced very similar results in this scenario, as the simulation involves a simple case of a vehicle moving in a straight line under constant acceleration.  
 
