@@ -14,33 +14,39 @@ def numberOfRows(csvFile: str):
 def checkNameInCSV(name: str, csvFile: str):
     with open(csvFile, "rt") as f:
         reader = csv.reader(f, delimiter=",")
-        for row in reader:
-            if name in row:
-                return True, row.index(name)
+        header = next(reader)
+        if name in header:
+            return True, header.index(name)
     return False, 0
 
 def parseArguments():
     parser = argparse.ArgumentParser()
-    parser.add_argument("csv_folder", help="Folder containing CSV files")
+    parser.add_argument("csv_paths", nargs="+", help="Folder(s) or CSV file(s)")
     parser.add_argument("-s", type=float, required=True, help="Sample rate")
     parser.add_argument("-y", type=str, nargs="+", required=True, help="Columns to plot")
     parser.add_argument("-ng", action="store_false", help="No GUI. Save PNG file with combined name.")
+    parser.add_argument("--labels", type=str, nargs="+", help="Optional labels for each CSV file")
     return parser.parse_args()
+
+def collect_csv_files(paths):
+    csv_files = []
+    for path in paths:
+        if os.path.isdir(path):
+            csv_files += [os.path.join(path, f) for f in os.listdir(path) if f.endswith(".csv")]
+        elif os.path.isfile(path) and path.endswith(".csv"):
+            csv_files.append(path)
+        else:
+            print(f"Warning: {path} is not a valid CSV file or directory, skipping.")
+    return csv_files
 
 def main():
     args = parseArguments()
     sampleRate = args.s
 
-    # Collect all CSV files from folder
-    if not os.path.isdir(args.csv_folder):
-        print(f"{args.csv_folder} is not a valid folder")
-        exit(1)
-
-    csv_files = [os.path.join(args.csv_folder, f) 
-                 for f in os.listdir(args.csv_folder) if f.endswith(".csv")]
+    csv_files = collect_csv_files(args.csv_paths)
 
     if not csv_files:
-        print("No CSV files found in folder.")
+        print("No CSV files found in the given paths.")
         exit(1)
 
     # Validate all files
@@ -50,12 +56,18 @@ def main():
                 print(f"[{name}] not found in {csv_file}")
                 exit(1)
 
+    # Validate labels if provided
+    if args.labels:
+        if len(args.labels) != len(csv_files):
+            print("Number of labels must match the number of CSV files.")
+            exit(1)
+
     # Setup subplot grid
     nPlots = math.ceil(math.sqrt(len(args.y)))
     fig, ax = plt.subplots(nPlots, nPlots, sharex="row", squeeze=False)
 
-    # For each file, plot each variable (after aligning start point)
-    for csv_file in csv_files:
+    # Plot each variable from each file
+    for idx, csv_file in enumerate(csv_files):
         df = pd.read_csv(csv_file)
 
         # Align start point: find first positive velocity index
@@ -63,8 +75,8 @@ def main():
         filtered = df.loc[first_positive_idx:].reset_index(drop=True)
 
         # Time axis recomputed for filtered data
-        time_axis = np.linspace(0, len(filtered-1)*sampleRate, len(filtered))
-        label_prefix = os.path.basename(csv_file)
+        time_axis = np.linspace(0, (len(filtered)-1)*sampleRate, len(filtered))
+        label_prefix = args.labels[idx] if args.labels else os.path.basename(csv_file)
 
         ax_idx_row = 0
         ax_idx_col = 0
@@ -83,7 +95,7 @@ def main():
     if args.ng:
         plt.show()
     else:
-        out_name = os.path.basename(os.path.normpath(args.csv_folder))
+        out_name = "combined_plot"
         plt.savefig(out_name + ".png")
 
 if __name__ == "__main__":

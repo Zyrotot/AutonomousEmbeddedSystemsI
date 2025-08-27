@@ -1,1 +1,0 @@
-python3 plot.py $1 -s 0.1 -y vd_double_track/x_vec/v_x_mps vd_double_track/x_dot_vec/v_x_mps driver_input/acceleration vd_double_track/x_dot_vec/v_z_mps
