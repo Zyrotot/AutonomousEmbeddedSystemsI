@@ -6,7 +6,7 @@ from nav_msgs.msg import Odometry
 import math
 
 class VehicleController(Node):
-    def __init__(self, steering_angle=0.3, target_yaw=math.pi/2, pre_delay=2.0, post_delay=2.0, curve_gain = 1.0, velocity_change=0.0):
+    def __init__(self, target_yaw=math.pi/2, pre_delay=2.0, post_delay=2.0, curve_gain = 1.0, velocity_change=0.0):
         super().__init__('vehicle_controller')
 
         self.publisher_ = self.create_publisher(AckermannControlCommand,
@@ -21,7 +21,6 @@ class VehicleController(Node):
         self.current_position = (0.0, 0.0, 0.0)
         self.current_yaw = 0.0
 
-        self.steering_angle = steering_angle
         self.target_yaw = target_yaw
         self.pre_delay = pre_delay
         self.post_delay = post_delay
@@ -109,13 +108,53 @@ def quaternion_to_yaw(qx, qy, qz, qw):
     return yaw
 
 def main(args=None):
+    import sys
     rclpy.init(args=args)
-    node = VehicleController(steering_angle=1.0,
-                             target_yaw=math.pi/2,
-                             pre_delay=2.0,
-                             post_delay=2.0,
-                             curve_gain=10.0,
-                             velocity_change=0.0)
+
+    # Define parameter sets
+    parameter_sets = {
+        "straight": {
+            "target_yaw": 0.0,
+            "pre_delay": 2.0,
+            "post_delay": 2.0,
+            "curve_gain": 0.0,
+            "velocity_change": 0.0
+        },
+        "gentle": {
+            "target_yaw": math.pi/6,  # 30 degrees
+            "pre_delay": 2.0,
+            "post_delay": 2.0,
+            "curve_gain": 3.0,
+            "velocity_change": 0.0
+        },
+        "medium": {
+            "target_yaw": math.pi/2,  # 90 degrees
+            "pre_delay": 2.0,
+            "post_delay": 2.0,
+            "curve_gain": 6.0,
+            "velocity_change": 0.0
+        },
+        "tight": {
+            "target_yaw": math.pi,  # 180 degrees
+            "pre_delay": 2.0,
+            "post_delay": 2.0,
+            "curve_gain": 10.0,
+            "velocity_change": 0.0
+        }
+    }
+
+    if len(sys.argv) > 1:
+        selection = sys.argv[1].lower()
+        if selection not in parameter_sets:
+            print(f"Unknown selection '{selection}'. Valid options: {list(parameter_sets.keys())}")
+            return
+    else:
+        print("No selection provided. Defaulting to 'tight'.")
+        selection = "tight"
+
+    params = parameter_sets[selection]
+    print(f"Running with parameter set: {selection}")
+    node = VehicleController(**params)
     rclpy.spin(node)
 
 if __name__ == '__main__':

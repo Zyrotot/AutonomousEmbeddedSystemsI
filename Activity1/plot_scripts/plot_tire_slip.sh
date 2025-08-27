@@ -1,0 +1,1 @@
+python3 plot_scripts/plot.py $1 -s 0.1 -y vd_double_track/imr/tire_slip_angle_rad/front_left vd_double_track/imr/tire_slip_angle_rad/front_right vd_double_track/imr/tire_slip_angle_rad/rear_left vd_double_track/imr/tire_slip_angle_rad/rear_right
