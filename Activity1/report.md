@@ -96,84 +96,130 @@ In more complex situations, increasing the integration step can introduce delays
 
 # Exercise 2
 
-For this exercise I created the script in `control_scripts/curve_control.py`, this script accelerates the car for a time, starts a curve and after completing it runs for a little more time.
-In the script I can change the acceleration before the curve and the change in acceleration during th curve, the aggressivity of the steering and the curve that will be made.
+For this exercise, I developed the script `control_scripts/curve_control.py`.  
+The vehicle is commanded to accelerate for a given time, enter a curve, and then continue for a short period after completing the maneuver.  
+
+The script allows variation of:  
+- **Acceleration before the curve**  
+- **Acceleration (or deceleration) during the curve**  
+- **Curve aggressiveness** (steering profile)  
+- **Final curve geometry** (final vehicle yaw)  
+
+Steering is applied progressively: as the vehicle approaches the desired angle, the steering input is reduced. This produces smoother trajectories and highlights the vehicle’s physical response to different driving conditions.
+
+---
 
 ## Parameter Variations
-| Curve type  | Degrees |
-|------------|--------------|
-| Straight        | 0  |
-| Gentle       | 30  |
-| Medium        | 90  |
-| Tight | 180  |
 
-This plot shows the position over time of every type of curve, for better visualization:
+| Curve type | Degrees |
+|------------|---------|
+| Straight   | 0       |
+| Gentle     | 30      |
+| Medium     | 90      |
+| Tight      | 180     |
+
+The figure below shows the trajectories for all curve types:
 
 ![Cars trajectories](plot_figures/E2/position.png)
 
-### Constant acceleration step of 1 m/s^2
+---
 
-![Velocity response for 1ms2 constant acceleration](plot_figures/E2/1ms_acceleration/velocity_change_0/velocity.png)
+## Results
 
+### Case 1 — Constant acceleration of 1 m/s²
+
+![Velocity response for 1ms2 constant acceleration](plot_figures/E2/1ms_acceleration/velocity_change_0/velocity.png)  
 ![Spring displacement response for 1ms2 constant acceleration](plot_figures/E2/1ms_acceleration/velocity_change_0/spring_displacement.png)
 
-### Acceleration step of 1 m/s^2 before the curve an 3 m/s² during
+At low acceleration, the vehicle’s motion remains relatively stable.  
+However, in tighter curves, oscillations appear in the dynamics, probably because of delays in actuation.  
 
-![Velocity response for 1ms before and 3ms2 after](plot_figures/E2/1ms_acceleration/velocity_change_2/velocity.png)
+---
 
+### Case 2 — 1 m/s² before the curve, 3 m/s² during the curve
+
+![Velocity response for 1ms before and 3ms2 after](plot_figures/E2/1ms_acceleration/velocity_change_2/velocity.png)  
 ![Spring displacement response for 1ms before and 3ms2 after](plot_figures/E2/1ms_acceleration/velocity_change_2/spring_displacement.png)
 
-### Constant acceleration step of 3 m/s^2
+Increasing acceleration inside the curve increases the applied forces.  
+This produces stronger spring compression and improves the overall trajectory.
 
-![Velocity response for 3ms2 constant acceleration](plot_figures/E2/3ms_acceleration/velocity_change_0/velocity.png)
+---
 
+### Case 3 — Constant acceleration of 3 m/s²
+
+![Velocity response for 3ms2 constant acceleration](plot_figures/E2/3ms_acceleration/velocity_change_0/velocity.png)  
 ![Spring displacement response for 3ms2 constant acceleration](plot_figures/E2/3ms_acceleration/velocity_change_0/spring_displacement.png)
 
-### Acceleration of 3 m/s² before the curve and 5 m/s² during
+At higher constant acceleration, the vehicle enters the curve with higher speed.  
+The system response becomes more oscillatory compared to the previous example, even though both have the same acceleration step inside the curve.
 
-![Velocity response for 3ms before and 5ms2 after](plot_figures/E2/3ms_acceleration/velocity_change_2/velocity.png)
+---
 
+### Case 4 — 3 m/s² before the curve, 5 m/s² during the curve
+
+![Velocity response for 3ms before and 5ms2 after](plot_figures/E2/3ms_acceleration/velocity_change_2/velocity.png)  
 ![Spring displacement response for 3ms before and 5ms2 after](plot_figures/E2/3ms_acceleration/velocity_change_2/spring_displacement.png)
 
-### Acceleration of 3 m/s² before the curve and -0.5 m/s² during
+Now even though we are accelerating more during the curve, the acceleration step is too big and we start to see some oscilation again.
 
-![Velocity response for 3ms before and -0.5ms2 after](plot_figures/E2/3ms_acceleration/velocity_change_minus_3_5/velocity.png)
+---
 
+### Case 5 — 3 m/s² before the curve, -0.5 m/s² (deceleration) during the curve
+
+![Velocity response for 3ms before and -0.5ms2 after](plot_figures/E2/3ms_acceleration/velocity_change_minus_3_5/velocity.png)  
 ![Spring displacement response for 3ms before and -0.5ms2 after](plot_figures/E2/3ms_acceleration/velocity_change_minus_3_5/spring_displacement.png)
+
+Decelerating in the curve reduces the vehicle’s kinetic energy and lowers lateral acceleration.
 
 # Exercise 3
 
-
-For simulation of road conditions we need to change the variables `LMUX` and `LMUY` which represents the maximum friction in the longitudinal and lateral directions, I will be using:
+To simulate different road conditions, the parameters `LMUX` and `LMUY` were modified. These represent the maximum available friction in the longitudinal and lateral directions, respectively.  
 
 ## Parameter Variations
-| Condition  | LMUX/LMUY |
-|------------|--------------|
-| Dry asphalt        | 0.9  |
-| Wet asphalt       | 0.5  |
-| Ice         | 0.1  |
 
+| Condition    | LMUX/LMUY |
+|--------------|-----------|
+| Dry asphalt  | 0.90      |
+| Wet asphalt  | 0.50      |
+| Ice          | 0.10      |
 
-### Acceleraion step of 1 m/s²
+---
 
-![Position for 1ms2 constant acceleration](plot_figures/E3/1ms_acceleration/position.png)
+## Results
 
-![Velocity response for 1ms2 constant acceleration](plot_figures/E3/1ms_acceleration/velocity.png)
+### Case 1 — Acceleration step of 1 m/s²
 
-![Spring displacement response for 1ms2 constant acceleration](plot_figures/E3/1ms_acceleration/spring_displacement.png)
+![Position for 1ms2 constant acceleration](plot_figures/E3/1ms_acceleration/position.png)  
+![Velocity response for 1ms2 constant acceleration](plot_figures/E3/1ms_acceleration/velocity.png)  
+![Spring displacement response for 1ms2 constant acceleration](plot_figures/E3/1ms_acceleration/spring_displacement.png)  
 
-### Acceleraion step of 3 m/s²
+At low acceleration, the influence of friction limits is minimal.  
+The vehicle successfully follows the curves on all surfaces, since the required tire forces remain below the maximum friction available.  
+Suspension displacement differences are small, as lateral load transfer is not yet extreme.
 
-![Position for 3ms2 constant acceleration](plot_figures/E3/3ms_acceleration/position.png)
+---
 
-![Velocity response for 3ms2 constant acceleration](plot_figures/E3/3ms_acceleration/velocity.png)
+### Case 2 — Acceleration step of 3 m/s²
 
-![Spring displacement response for 3ms2 constant acceleration](plot_figures/E3/3ms_acceleration/spring_displacement.png)
+![Position for 3ms2 constant acceleration](plot_figures/E3/3ms_acceleration/position.png)  
+![Velocity response for 3ms2 constant acceleration](plot_figures/E3/3ms_acceleration/velocity.png)  
+![Spring displacement response for 3ms2 constant acceleration](plot_figures/E3/3ms_acceleration/spring_displacement.png)  
 
-### Acceleraion step of 5 m/s²
+At this higher acceleration, friction limits become critical:  
+- On **dry asphalt**, the vehicle completes the curve normally.  
+- On **wet asphalt**, the reduced friction causes larger slip angles and a wider trajectory.  
+- On **ice**, with extremely low friction (0.1), the vehicle struggles to generate enough lateral force, resulting in much slower curve negotiation and strong understeer.  
 
-![Position for 5ms2 constant acceleration](plot_figures/E3/5ms_acceleration/position.png)
+---
 
-![Velocity response for 5ms2 constant acceleration](plot_figures/E3/5ms_acceleration/velocity.png)
+### Case 3 — Acceleration step of 5 m/s²
 
-![Spring displacement response for 5ms2 constant acceleration](plot_figures/E3/5ms_acceleration/spring_displacement.png)
+![Position for 5ms2 constant acceleration](plot_figures/E3/5ms_acceleration/position.png)  
+![Velocity response for 5ms2 constant acceleration](plot_figures/E3/5ms_acceleration/velocity.png)  
+![Spring displacement response for 5ms2 constant acceleration](plot_figures/E3/5ms_acceleration/spring_displacement.png)  
+
+At very high acceleration, nonlinear effects are dominant:  
+- On **dry asphalt**, the vehicle still manages the curve, though with higher lateral load transfer.  
+- On **wet asphalt**, the trajectory widens significantly, as the tires saturate earlier.  
+- On **ice**, the lack of grip makes the curve extremely wide — in fact, the turning radius becomes several times larger, showing that longitudinal demand has almost completely consumed the available friction.  
