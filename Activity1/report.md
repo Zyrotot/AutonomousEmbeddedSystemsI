@@ -146,9 +146,34 @@ This plot shows the position over time of every type of curve, for better visual
 
 For simulation of road conditions we need to change the variables `LMUX` and `LMUY` which represents the maximum friction in the longitudinal and lateral directions, I will be using:
 
-### Parameter Variations
+## Parameter Variations
 | Condition  | LMUX/LMUY |
 |------------|--------------|
 | Dry asphalt        | 0.9  |
 | Wet asphalt       | 0.5  |
 | Ice         | 0.1  |
+
+
+### Acceleraion step of 1 m/s²
+
+![Position for 1ms2 constant acceleration](plot_figures/E3/1ms_acceleration/position.png)
+
+![Velocity response for 1ms2 constant acceleration](plot_figures/E3/1ms_acceleration/velocity.png)
+
+![Spring displacement response for 1ms2 constant acceleration](plot_figures/E3/1ms_acceleration/spring_displacement.png)
+
+### Acceleraion step of 3 m/s²
+
+![Position for 3ms2 constant acceleration](plot_figures/E3/3ms_acceleration/position.png)
+
+![Velocity response for 3ms2 constant acceleration](plot_figures/E3/3ms_acceleration/velocity.png)
+
+![Spring displacement response for 3ms2 constant acceleration](plot_figures/E3/3ms_acceleration/spring_displacement.png)
+
+### Acceleraion step of 5 m/s²
+
+![Position for 5ms2 constant acceleration](plot_figures/E3/5ms_acceleration/position.png)
+
+![Velocity response for 5ms2 constant acceleration](plot_figures/E3/5ms_acceleration/velocity.png)
+
+![Spring displacement response for 5ms2 constant acceleration](plot_figures/E3/5ms_acceleration/spring_displacement.png)
