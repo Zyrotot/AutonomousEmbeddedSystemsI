@@ -9,3 +9,4 @@ Repository for the activities of the subject **Autonomous Embedded Systems I** a
 ## Reports
 
 - [**Activity 1**](Activity1/report.md)
+- [**Activity 2**](Activity2/report.md)
